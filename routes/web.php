@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EmployeeControllerelr;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,7 +26,13 @@ Route::post('/import_process', [\App\Http\Controllers\ImportController::class, '
 
 
 Route::get('/admin/employee', [\App\Http\Controllers\EmployeeControllerelr::class, 'index'])->name('employees.index');
+Route::get('/admin/employee/create', [\App\Http\Controllers\EmployeeControllerelr::class, 'create'])->name('employees.create');
+Route::post('/admin/employee', [\App\Http\Controllers\EmployeeControllerelr::class, 'store'])->name('employees.store');
+Route::get('/admin/employee/{employee}/edit', [\App\Http\Controllers\EmployeeControllerelr::class, 'edit'])->name('employees.edit');
+Route::put('/admin/employee/{employee}', [\App\Http\Controllers\EmployeeControllerelr::class, 'update'])->name('employees.update');
+Route::get('/admin/employee/{employee}', [\App\Http\Controllers\EmployeeControllerelr::class, 'show'])->name('employees.show');
+Route::delete('/admin/employee/{employee}', [EmployeeControllerelr::class, 'destroy'])->name('employees.destroy');
 
-Route::get('/admin/employee/{$id}', [\App\Http\Controllers\EmployeeControllerelr::class, 'destroy'])->name('employees.destroy');
+
 
 require __DIR__ . '/auth.php';

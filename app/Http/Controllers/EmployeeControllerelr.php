@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 
+
 class EmployeeControllerelr extends Controller
 {
     /**
@@ -26,6 +27,7 @@ class EmployeeControllerelr extends Controller
      */
     public function create()
     {
+        return view('employees.create');
     }
 
     /**
@@ -34,9 +36,21 @@ class EmployeeControllerelr extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Employee $employee)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'designation' => 'required',
+            'joindate' => 'required|date_format:Y-m-d',
+        ]);
+        Employee::create([
+            'name' => $request->name,
+            'designation' => $request->designation,
+            'joindate' => $request->joindate,
+
+        ]);
+        return redirect()->route('employees.index')
+            ->with('success', 'Employee created Successfully!');
     }
 
     /**
@@ -45,9 +59,10 @@ class EmployeeControllerelr extends Controller
      * @param  \App\Models\Employee  $employee
      * @return \Illuminate\Http\Response
      */
-    public function show(Employee $employee)
+    public function show($id)
     {
-        //
+        $employee = Employee::where('id', $id)->first();
+        return view('employees.show', compact('employee'));
     }
 
     /**
@@ -58,7 +73,7 @@ class EmployeeControllerelr extends Controller
      */
     public function edit(Employee $employee)
     {
-        //
+        return view('employees.edit', compact('employee'));
     }
 
     /**
@@ -70,7 +85,19 @@ class EmployeeControllerelr extends Controller
      */
     public function update(Request $request, Employee $employee)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'designation' => 'required',
+            'joindate' => 'required|date_format:Y-m-d',
+        ]);
+        $employee->name = $request->name;
+        $employee->designation = $request->designation;
+        $employee->joindate = $request->joindate;
+
+        $employee->save();
+
+        return redirect()->route('employees.index', compact('employee'))
+            ->with('success', 'Employee updated Successfully!');
     }
 
     /**

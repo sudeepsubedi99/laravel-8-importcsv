@@ -1,4 +1,5 @@
 <x-app-layout>
+    <x-delete />
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Employees') }}
@@ -35,83 +36,88 @@
                     </form> --}}
 
                     <div class="overflow-hidden overflow-x-auto min-w-full align-middle sm:rounded-md">
-                        <table class="min-w-full divide-y divide-gray-200 border">
-                            <thead>
-                                <tr>
-                                    <th class="px-6 py-3 bg-gray-50">
-                                        <span
-                                            class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Name</span>
-                                    </th>
-                                    <th class="px-6 py-3 bg-gray-50">
-                                        <span
-                                            class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Designation</span>
-                                    </th>
-                                    <th class="px-6 py-3 bg-gray-50">
-                                        <span
-                                            class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Join
-                                            Date</span>
-                                    </th>
-                                    <th class="px-6 py-3 bg-gray-50">
-                                        <span
-                                            class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Action</span>
-                                    </th>
-                                </tr>
-                            </thead>
-
-                            <tbody class="bg-white divide-y divide-gray-200 divide-solid">
-                                @foreach ($employees as $employee)
-                                    <tr class="bg-white">
-                                        <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                            {{ $employee->name }}
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                            {{ $employee->designation }}
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                            {{ $employee->joindate }}
-                                        </td>
-                                        <td>
-                                            <a href=""
-                                                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                                Details
-                                                {{-- {{ route('users.show', [$admin->id]) }} --}}
-                                            </a>
-                                            <a href=""
-                                                class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded margin-5">
-                                                Edit
-                                                {{-- {{ route('users.edit', [$admin->id]) }} --}}
-                                            </a>
-                                            <button
-                                                class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                                                onclick="confirmDelete({{ $employee->id }})">
-                                                Delete
-                                            </button>
-                                            <form id="delete-form-{{ $employee->id }}" style="display: none"
-                                                action="{{ route('employees.destroy', $employee->id) }}"
-                                                method="POST">
-                                                @csrf @method('DELETE')
-
-                                            </form>
-                                        </td>
-
+                        <div class="card">
+                            <div class="card-header ">
+                                <h3 class="card-title text-center ">All Employee</h3>
+                                <div class="card-tools text-right mb-8">
+                                    <a href="{{ route('employees.create') }}"
+                                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ">
+                                        Add New Employee
+                                    </a>
+                                </div>
+                            </div>
+                            <table class="min-w-full divide-y divide-gray-200 border">
+                                <thead>
+                                    <tr>
+                                        <th class="px-6 py-3 bg-gray-50">
+                                            <span
+                                                class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Name</span>
+                                        </th>
+                                        <th class="px-6 py-3 bg-gray-50">
+                                            <span
+                                                class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Designation</span>
+                                        </th>
+                                        <th class="px-6 py-3 bg-gray-50">
+                                            <span
+                                                class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Join
+                                                Date</span>
+                                        </th>
+                                        <th class="px-6 py-3 bg-gray-50">
+                                            <span
+                                                class="text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Action</span>
+                                        </th>
                                     </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                </thead>
+
+                                <tbody class="bg-white divide-y divide-gray-200 divide-solid">
+                                    @foreach ($employees as $employee)
+                                        <tr class="bg-white">
+                                            <td
+                                                class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900 text-center">
+                                                {{ $employee->name }}
+                                            </td>
+                                            <td
+                                                class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900 text-center">
+                                                {{ $employee->designation }}
+                                            </td>
+                                            <td
+                                                class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900 text-center">
+                                                {{ $employee->joindate }}
+                                            </td>
+                                            <td class="text-center">
+                                                <a href="{{ route('employees.show', [$employee->id]) }}"
+                                                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                                    Details
+                                                    {{-- {{ route('users.show', [$admin->id]) }} --}}
+                                                </a>
+                                                <a href="{{ route('employees.edit', [$employee->id]) }}"
+                                                    class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded margin-5">
+                                                    Edit
+                                                    {{-- {{ route('users.edit', [$admin->id]) }} --}}
+                                                </a>
+                                                <button
+                                                    class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                                                    onclick="confirmDelete({{ $employee->id }})">
+                                                    Delete
+                                                </button>
+                                                <form id="delete-form-{{ $employee->id }}" style="display: none"
+                                                    action="{{ route('employees.destroy', $employee->id) }}"
+                                                    method="POST">
+                                                    @csrf @method('DELETE')
+
+                                                </form>
+                                            </td>
+
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+
+                        {{ $employees->links() }}
+
                     </div>
-
-                    {{ $employees->links() }}
-
                 </div>
             </div>
         </div>
-    </div>
-    <script language="javascript">
-        function ConfirmDelete(id) {
-            var result = confirm("Are you sure you want to Delete this Conversation ?");
-            if (result == true) {
-                window.location = "index.php?page=inbox&delete_conversation=" + id;
-            }
-        }
-    </script>
 </x-app-layout>
